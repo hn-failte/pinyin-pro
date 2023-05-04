@@ -1,4 +1,3 @@
-import { SingleWordResult } from '../type';
 interface BasicOptions {
     /**
      * @description 返回的拼音音调类型
@@ -126,7 +125,5 @@ declare function pinyin(word: string, options?: OptionsReturnAll): AllData[];
  * @param {{}=} options 配置项
  * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
  */
-declare function multiplePinyin(word: string, options?: {}): string | (SingleWordResult & {
-    num?: number | undefined;
-})[][];
+declare function multiplePinyin(word: string, options?: OptionsReturnString): string;
 export { pinyin, multiplePinyin };

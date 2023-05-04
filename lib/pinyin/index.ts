@@ -221,6 +221,8 @@ function pinyin(
  * @param {{}=} options 配置项
  * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
  */
+function multiplePinyin(word: string, options?: OptionsReturnString): string;
+
 function multiplePinyin(word: string, options?: {}) {
   // 校验 word 类型是否正确
   const legal = validateType(word);
