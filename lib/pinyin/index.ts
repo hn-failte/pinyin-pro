@@ -1,4 +1,4 @@
-import { getPinyinArray } from './handle';
+import { getPinyinArray, getMultiplePinyinArray } from './handle';
 import {
   validateType,
   middleWareNonZh,
@@ -215,4 +215,27 @@ function pinyin(
   return middlewareType(list, options, word);
 }
 
-export { pinyin };
+/**
+ * @description: 获取汉语多音字字符串的拼音
+ * @param {string} word 要转换的汉语字符串多音字
+ * @param {{}=} options 配置项
+ * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
+ */
+function multiplePinyin(word: string, options?: {}) {
+  // 校验 word 类型是否正确
+  const legal = validateType(word);
+  if (!legal) {
+    return word;
+  }
+
+  // 传入空字符串
+  if (word === '') {
+    return [];
+  }
+
+  let list = getMultiplePinyinArray(word);
+
+  return list;
+}
+
+export { pinyin, multiplePinyin };

@@ -1,3 +1,4 @@
+import { SingleWordResult } from '../type';
 interface BasicOptions {
     /**
      * @description 返回的拼音音调类型
@@ -119,4 +120,13 @@ declare function pinyin(word: string, options?: OptionsReturnArray): string[];
  * @return {string | string[] | AllData[]} options.type 为 string 时，返回字符串，中间用空格隔开；为 array 时，返回拼音字符串数组；为 all 时返回全部信息的数组
  */
 declare function pinyin(word: string, options?: OptionsReturnAll): AllData[];
-export { pinyin };
+/**
+ * @description: 获取汉语多音字字符串的拼音
+ * @param {string} word 要转换的汉语字符串多音字
+ * @param {{}=} options 配置项
+ * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
+ */
+declare function multiplePinyin(word: string, options?: {}): string | (SingleWordResult & {
+    num?: number | undefined;
+})[][];
+export { pinyin, multiplePinyin };

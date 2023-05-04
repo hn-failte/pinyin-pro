@@ -55,6 +55,16 @@ const getPinyinArray = (
   return list;
 };
 
+const getMultiplePinyinArray = (
+  word: string,
+): Array<Array<SingleWordResult & { num?: number }>> => {
+  let list: SingleWordResult[][] = Array(word.length);
+  for (let i = 0; i < word.length; i++) {
+    list[i] = getMultiplePinyin(word[i])
+  }
+  return list;
+};
+
 const getPinyin = (
   word: string,
   list: SingleWordResult[],
@@ -145,6 +155,8 @@ const getMultiplePinyin: GetMultiplePinyin = (word, mode = 'normal') => {
       result: value,
       isZh: true,
       originPinyin: value,
+      pinyin: getPinyinWithNum(value, value),
+      num: getNumOfTone(value),
     }));
   } else {
     return [
@@ -153,6 +165,8 @@ const getMultiplePinyin: GetMultiplePinyin = (word, mode = 'normal') => {
         result: word,
         isZh: false,
         originPinyin: word,
+        pinyin: getPinyinWithNum(word, word),
+        num: getNumOfTone(word),
       },
     ];
   }
@@ -244,7 +258,7 @@ const getNumOfTone: GetNumOfTone = (pinyin) => {
     } else if (reg_tone4.test(_pinyin)) {
       tone_num_arr.push('4');
     } else if (reg_tone0.test(_pinyin)) {
-      tone_num_arr.push('0');
+      tone_num_arr.push('5');
     } else {
       tone_num_arr.push('');
     }
@@ -286,6 +300,7 @@ const getFirstLetter: GetFirstLetter = (pinyin) => {
 
 export {
   getPinyinArray,
+  getMultiplePinyinArray,
   getPinyinWithoutTone,
   getInitialAndFinal,
   getMultiplePinyin,
