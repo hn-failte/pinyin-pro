@@ -135,6 +135,8 @@ const DEFAULT_OPTIONS: CompleteOptions = {
   v: false,
 };
 
+export interface MultipleOptions {}
+
 /**
  * @description: 获取汉语字符串的拼音
  * @param {string} word 要转换的汉语字符串
@@ -218,12 +220,12 @@ function pinyin(
 /**
  * @description: 获取汉语多音字字符串的拼音
  * @param {string} word 要转换的汉语字符串多音字
- * @param {{}=} options 配置项
+ * @param {MultipleOptions=} options 配置项
  * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
  */
-function multiplePinyin(word: string, options?: OptionsReturnString): string;
+function multiplePinyin(word: string, options?: MultipleOptions): string;
 
-function multiplePinyin(word: string, options?: {}) {
+function multiplePinyin(word: string, options?: MultipleOptions) {
   // 校验 word 类型是否正确
   const legal = validateType(word);
   if (!legal) {
