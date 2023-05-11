@@ -1,3 +1,4 @@
+import { MapResultItem } from './../type';
 interface BasicOptions {
     /**
      * @description 返回的拼音音调类型
@@ -99,6 +100,7 @@ export interface CompleteOptions extends BasicOptions {
     type?: 'string' | 'array' | 'all';
 }
 export interface MultipleOptions {
+    type: 'map' | 'array';
 }
 /**
  * @description: 获取汉语字符串的拼音
@@ -122,10 +124,14 @@ declare function pinyin(word: string, options?: OptionsReturnArray): string[];
  */
 declare function pinyin(word: string, options?: OptionsReturnAll): AllData[];
 /**
- * @description: 获取汉语多音字字符串的拼音
- * @param {string} word 要转换的汉语字符串多音字
- * @param {MultipleOptions=} options 配置项
- * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
+ * @description: 获取汉语多音字字符串的拼音，返回包含多音字所有拼音数组的数组或map
  */
-declare function multiplePinyin(word: string, options?: MultipleOptions): string;
+declare function multiplePinyin(word: string, options: {
+    type: 'array';
+}): Array<Array<MapResultItem>>;
+declare function multiplePinyin(word: string, options: {
+    type: 'map';
+}): Record<string, Array<MapResultItem>>;
+declare function multiplePinyin(word: string): Record<string, Array<MapResultItem>>;
+declare function multiplePinyin(word: string): Record<string, Array<MapResultItem>>;
 export { pinyin, multiplePinyin };

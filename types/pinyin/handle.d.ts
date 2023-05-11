@@ -1,7 +1,10 @@
-import { SingleWordResult, PinyinMode } from '../type';
+import { SingleWordResult, MapResultItem, PinyinMode } from '../type';
 declare const getPinyinArray: (word: string, mode: 'normal' | 'surname') => SingleWordResult[];
-declare const getMultiplePinyinArray: (word: string) => Array<Array<SingleWordResult & {
-    num?: number;
+declare const getMultiplePinyinArray: (word: string) => Array<Array<MapResultItem & {
+    num?: string;
+}>>;
+declare const getMultiplePinyinMap: (word: string) => Record<string, Array<MapResultItem & {
+    num?: string;
 }>>;
 /**
  * @description: 将带音调符号拼音转换为不带音调拼音
@@ -15,7 +18,7 @@ declare const getPinyinWithoutTone: GetPinyinWithoutTone;
  * @param {string} word
  * @return {WordResult[]}
  */
-type GetMultiplePinyin = (word: string, mode?: PinyinMode) => SingleWordResult[];
+type GetMultiplePinyin = (word: string, mode?: PinyinMode) => MapResultItem[];
 declare const getMultiplePinyin: GetMultiplePinyin;
 /**
  * @description: 获取拼音的声母和韵母
@@ -60,4 +63,4 @@ declare const getPinyinWithNum: GetPinyinWithNum;
  */
 type GetFirstLetter = (pinyin: string) => string;
 declare const getFirstLetter: GetFirstLetter;
-export { getPinyinArray, getMultiplePinyinArray, getPinyinWithoutTone, getInitialAndFinal, getMultiplePinyin, getNumOfTone, getPinyinWithNum, getFirstLetter, getFinalParts, };
+export { getPinyinArray, getMultiplePinyinArray, getMultiplePinyinMap, getPinyinWithoutTone, getInitialAndFinal, getMultiplePinyin, getNumOfTone, getPinyinWithNum, getFirstLetter, getFinalParts, };

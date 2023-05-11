@@ -8,7 +8,7 @@ import {
 import Surnames from '../data/surname';
 import DICT1 from '../data/dict1';
 import { getCustomDict } from '../custom';
-import { SingleWordResult, PinyinMode } from '../type';
+import { SingleWordResult, MapResultItem, PinyinMode } from '../type';
 import { ACNormal, ACSurname } from '../common/ac';
 import {
   DoubleUnicodePrefixReg,
@@ -57,12 +57,25 @@ const getPinyinArray = (
 
 const getMultiplePinyinArray = (
   word: string,
-): Array<Array<SingleWordResult & { num?: number }>> => {
-  let list: SingleWordResult[][] = Array(word.length);
+): Array<Array<MapResultItem & { num?: string }>> => {
+  let list: MapResultItem[][] = Array(word.length);
   for (let i = 0; i < word.length; i++) {
     list[i] = getMultiplePinyin(word[i])
   }
   return list;
+};
+
+const getMultiplePinyinMap = (
+  word: string,
+): Record<string, Array<MapResultItem & { num?: string }>> => {
+  const map: Record<string, Array<MapResultItem & { num?: string }>> = {}
+  for (let i = 0; i < word.length; i++) {
+    const char = word[i]
+    if (!map[char] && /^[\u4e00-\u9fa5]+$/.test(char)) {
+      map[char] = getMultiplePinyin(char)
+    }
+  }
+  return map;
 };
 
 const getPinyin = (
@@ -140,7 +153,7 @@ const getPinyinWithoutTone: GetPinyinWithoutTone = (pinyin) => {
 type GetMultiplePinyin = (
   word: string,
   mode?: PinyinMode
-) => SingleWordResult[];
+) => MapResultItem[];
 const getMultiplePinyin: GetMultiplePinyin = (word, mode = 'normal') => {
   const wordCode = word.charCodeAt(0);
   const customDict = getCustomDict();
@@ -301,6 +314,7 @@ const getFirstLetter: GetFirstLetter = (pinyin) => {
 export {
   getPinyinArray,
   getMultiplePinyinArray,
+  getMultiplePinyinMap,
   getPinyinWithoutTone,
   getInitialAndFinal,
   getMultiplePinyin,

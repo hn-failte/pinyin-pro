@@ -1,4 +1,5 @@
-import { getPinyinArray, getMultiplePinyinArray } from './handle';
+import { MapResultItem } from './../type';
+import { getPinyinArray, getMultiplePinyinArray, getMultiplePinyinMap } from './handle';
 import {
   validateType,
   middleWareNonZh,
@@ -30,14 +31,14 @@ interface BasicOptions {
    * @value finalTail：返回韵尾
    */
   pattern?:
-    | 'pinyin'
-    | 'initial'
-    | 'final'
-    | 'num'
-    | 'first'
-    | 'finalHead'
-    | 'finalBody'
-    | 'finalTail';
+  | 'pinyin'
+  | 'initial'
+  | 'final'
+  | 'num'
+  | 'first'
+  | 'finalHead'
+  | 'finalBody'
+  | 'finalTail';
   /**
    * @description 是否返回单个汉字的所有多音，仅针对输入的 word 为单个汉字生效
    * @value false：返回最常用的一个拼音 （默认值）
@@ -135,7 +136,9 @@ const DEFAULT_OPTIONS: CompleteOptions = {
   v: false,
 };
 
-export interface MultipleOptions {}
+export interface MultipleOptions {
+  type: 'map' | 'array'
+}
 
 /**
  * @description: 获取汉语字符串的拼音
@@ -218,12 +221,13 @@ function pinyin(
 }
 
 /**
- * @description: 获取汉语多音字字符串的拼音
- * @param {string} word 要转换的汉语字符串多音字
- * @param {MultipleOptions=} options 配置项
- * @return {Array<Array<SingleWordResult>>} 返回包含多音字所有拼音数组的数组
+ * @description: 获取汉语多音字字符串的拼音，返回包含多音字所有拼音数组的数组或map
  */
-function multiplePinyin(word: string, options?: MultipleOptions): string;
+function multiplePinyin(word: string, options: { type: 'array' }): Array<Array<MapResultItem>>
+function multiplePinyin(word: string, options: { type: 'map' }): Record<string, Array<MapResultItem>>
+function multiplePinyin(word: string): Record<string, Array<MapResultItem>>
+
+function multiplePinyin(word: string): Record<string, Array<MapResultItem>>
 
 function multiplePinyin(word: string, options?: MultipleOptions) {
   // 校验 word 类型是否正确
@@ -237,9 +241,11 @@ function multiplePinyin(word: string, options?: MultipleOptions) {
     return [];
   }
 
-  let list = getMultiplePinyinArray(word);
-
-  return list;
+  if (options?.type === 'array') {
+    return getMultiplePinyinArray(word);
+  } else {
+    return getMultiplePinyinMap(word);
+  }
 }
 
 export { pinyin, multiplePinyin };
